@@ -3,13 +3,26 @@ import Link from "next/link";
 import Image from "next/image";
 
 function Register() {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Username validation
+    if (username.length < 5) {
+      setError("Username harus minimal 5 karakter");
+      return;
+    }
+    
+    if (username.length > 20) {
+      setError("Username tidak boleh lebih dari 20 karakter");
+      return;
+    }
+
     // Password validation
     if (password.length < 8) {
       setError("Password harus minimal 8 karakter");
@@ -26,9 +39,9 @@ function Register() {
       return;
     }
 
-    // If validation passes, proceed with registration
+    // If all validations pass
     setError("");
-    // Continue with registration logic
+    setIsFormValid(true);
   };
 
   return (
@@ -114,6 +127,8 @@ function Register() {
               <input
                 type="text"
                 placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
                 required
               />
@@ -144,17 +159,27 @@ function Register() {
             )}
             
             <p className="text-sm text-gray-500">
-              Kata sandi harus minimal 8 karakter dan maksimal 20 karakter
+              Username harus 5-20 karakter<br />
+              Kata sandi harus 8-20 karakter
             </p>
 
-            <Link href="/main/home">
+            {isFormValid ? (
+              <Link href="/main/home">
+                <button
+                  type="button"
+                  className="w-full bg-[#2B5C2E] text-white py-3 rounded-lg hover:bg-green-800 transition-colors"
+                >
+                  Masuk
+                </button>
+              </Link>
+            ) : (
               <button
-                type="button"
+                type="submit"
                 className="w-full bg-[#2B5C2E] text-white py-3 rounded-lg hover:bg-green-800 transition-colors"
               >
-                Masuk
+                Daftar
               </button>
-            </Link>
+            )}
           </form>
 
           <p className="mt-6 text-center text-gray-600">

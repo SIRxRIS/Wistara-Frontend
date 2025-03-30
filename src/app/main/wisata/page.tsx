@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Navbar from "@/components/detail-wisata/Navbar";
 import HeroSection from "@/components/detail-wisata/HeroSection";
 import Tabs from "@/components/detail-wisata/Tabs";
@@ -15,28 +15,12 @@ import SimilarPlaces from "@/components/detail-wisata/SimilarPlaces";
 export default function WisataPage() {
   const [activeTab, setActiveTab] = useState("deskripsi");
 
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case "deskripsi":
-        return (
-          <>
-            <Description />
-            <HistoryCulture />
-          </>
-        );
-      case "daya-tarik":
-        return <Attractions />;
-      case "fasilitas":
-        return <Facilities />;
-      case "lokasi":
-        return <Map />;
-      case "ulasan":
-        return <Reviews />;
-      case "wisata-serupa":
-        return <SimilarPlaces />;
-      default:
-        return <Description />;
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
     }
+    setActiveTab(sectionId);
   };
 
   return (
@@ -44,8 +28,32 @@ export default function WisataPage() {
       <Navbar />
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">
         <HeroSection />
-        <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
-        {renderTabContent()}
+        <Tabs activeTab={activeTab} setActiveTab={scrollToSection} />
+        
+        <div id="deskripsi" className="scroll-mt-20">
+          <Description />
+          <HistoryCulture />
+        </div>
+
+        <div id="daya-tarik" className="scroll-mt-20">
+          <Attractions />
+        </div>
+
+        <div id="fasilitas" className="scroll-mt-20">
+          <Facilities />
+        </div>
+
+        <div id="lokasi" className="scroll-mt-20">
+          <Map />
+        </div>
+
+        <div id="ulasan" className="scroll-mt-20">
+          <Reviews />
+        </div>
+
+        <div id="wisata-serupa" className="scroll-mt-20">
+          <SimilarPlaces />
+        </div>
       </div>
     </div>
   );

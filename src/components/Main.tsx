@@ -40,12 +40,46 @@ const DropdownPortal = ({
 };
 
 const Main: React.FC = () => {
+  // Existing states
   const [filterOpen, setFilterOpen] = useState(false);
   const [filterPosition, setFilterPosition] = useState({ top: 0, left: 0 });
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  
+  // Add drag scroll states
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
+  
+  // Refs
   const filterButtonRef = React.useRef<HTMLButtonElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  // Mouse event handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - containerRef.current.offsetLeft);
+    setScrollLeft(containerRef.current.scrollLeft);
+  };
+  
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+  };
+  
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+  
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !containerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - containerRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    containerRef.current.scrollLeft = scrollLeft - walk;
+  };
 
   // Calculate position for dropdown
   const updateFilterPosition = () => {
@@ -122,9 +156,9 @@ const Main: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full">
-      {/* Hero Section with Background Image */}
-      <div className="relative h-[55vh] w-[90%] mx-auto rounded-b-[45px] overflow-hidden">
+    <div className="h-screen w-full flex flex-col overflow-hidden">
+      {/* Pura Ulun Section */}
+      <div className="relative h-[50vh] w-[90%] mx-auto rounded-b-[45px] overflow-hidden">
         <img
           src="/images/pura-ulun.png"
           alt="Pura Ulun Danu Bali"
@@ -352,47 +386,140 @@ const Main: React.FC = () => {
         </div>
       </div>
 
-      {/* Welcome Section - Now outside the hero section but still in the main container */}
-      <div className="bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center mt-5 text-[#2B5C2E] mb-4">
+      {/* Welcome Section */}
+      <div className="bg-white flex-1">
+        <div className="w-[90%] mx-auto h-full flex flex-col">
+          <h2 className="text-3xl font-bold text-center mt-3 text-[#2B5C2E] mb-2">
             Selamat Berpergian
           </h2>
-          <p className="text-center text-gray-800 max-w-3xl mx-auto mb-5">
+          <p className="text-center text-gray-800 max-w-3xl mx-auto mb-3 text-sm">
             Ayo berpetualang! Temukan tempat baru, rasakan pengalaman seru, dan
             ciptakan kenangan indah bersama WISTARA.
           </p>
 
-          {/* Destination Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Raja Ampat Card */}
-            <div className="relative rounded-xl overflow-hidden shadow-lg h-65">
-              <img
-                src="/images/raja-ampat.png"
-                alt="Raja Ampat"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/20 hover:bg-black/40 transition-all duration-300"></div>
-            </div>
+          {/* Destination Cards - Horizontal Scroll */}
+          <div className="flex-1 py-4">
+            <div 
+              ref={containerRef}
+              onMouseDown={handleMouseDown}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
+              className={`flex overflow-x-auto h-full space-x-4 pb-4 scroll-smooth hide-scrollbar cursor-grab active:cursor-grabbing ${
+                isDragging ? 'select-none' : ''
+              }`}
+            >
+              {/* All destination cards should use this class structure */}
+              <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] w-[400px] min-w-[400px]">
+                <img
+                  src="/images/raja-ampat.png"
+                  alt="Raja Ampat"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">Raja Ampat</h3>
+                  <p className="text-gray-200 text-sm">
+                    Surga tersembunyi di Papua Barat dengan keindahan bawah laut yang menakjubkan.
+                  </p>
+                </div>
+              </div>
 
-            {/* Gunung Bromo Card */}
-            <div className="relative rounded-xl overflow-hidden shadow-lg h-65">
-              <img
-                src="/images/bromo.png"
-                alt="Gunung Bromo"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/15 hover:bg-black/40 transition-all duration-300"></div>
-            </div>
+              {/* Toraja Card */}
+              <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] min-w-[380px]">
+                <img
+                  src="/images/toraja.png"
+                  alt="Toraja"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">Toraja</h3>
+                  <p className="text-gray-200 text-sm">
+                    Destinasi budaya unik di Sulawesi Selatan dengan arsitektur tradisional.
+                  </p>
+                </div>
+              </div>
 
-            {/* Toraja Card */}
-            <div className="relative rounded-xl overflow-hidden shadow-lg h-65">
-              <img
-                src="/images/toraja.png"
-                alt="Toraja"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black/15 hover:bg-black/40 transition-all duration-300"></div>
+              {/* Gunung Bromo Card */}
+              <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] min-w-[380px]">
+                <img
+                  src="/images/bromo.png"
+                  alt="Gunung Bromo"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">Gunung Bromo</h3>
+                  <p className="text-gray-200 text-sm">
+                    Gunung berapi aktif yang ikonik di Jawa Timur dengan pemandangan matahari terbit.
+                  </p>
+                </div>
+              </div>
+
+              {/* Bantimurung Card */}
+              <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] min-w-[380px]">
+                <img
+                  src="/images/bantimurung.png"
+                  alt="Bantimurung"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">Bantimurung</h3>
+                  <p className="text-gray-200 text-sm">
+                    Taman Nasional dengan air terjun memukau dan koleksi kupu-kupu terbesar.
+                  </p>
+                </div>
+              </div>
+
+              {/* Pulau Komodo Card */}
+              <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] min-w-[380px]">
+                <img
+                  src="/images/pulau-komodo.png"
+                  alt="Pulau Komodo"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">Pulau Komodo</h3>
+                  <p className="text-gray-200 text-sm">
+                    Habitat alami komodo dan pantai Pink yang menakjubkan di NTT.
+                  </p>
+                </div>
+              </div>
+
+              {/* Danau Toba Card */}
+              <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] min-w-[380px]">
+                <img
+                  src="/images/toba.png"
+                  alt="Danau Toba"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">Danau Toba</h3>
+                  <p className="text-gray-200 text-sm">
+                    Danau vulkanik terbesar di Indonesia dengan pemandangan alam yang spektakuler.
+                  </p>
+                </div>
+              </div>
+
+              {/* Pulau Padar Card */}
+              <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] min-w-[380px]">
+                <img
+                  src="/images/pulau-padar.png"
+                  alt="Pulau Padar"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">Pulau Padar</h3>
+                  <p className="text-gray-200 text-sm">
+                    Pulau eksotis dengan pemandangan bukit dan teluk yang memukau di NTT.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

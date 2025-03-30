@@ -1,31 +1,46 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import LoadingThreeDotsJumping from "../animations/loading";
-import { useRouter } from "next/navigation"; // Change this import
 
 function Login() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    try {
-      // Simulated login delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      // Navigate after successful login
-      router.push('/main/home');
-    } catch (error) {
-      console.error('Login failed:', error);
-    } finally {
-      setIsLoading(false);
+    
+    // Username validation
+    if (username.length < 5) {
+      setError("Username minimal 5 karakter");
+      return;
     }
+    
+    if (username.length > 20) {
+      setError("Username maksimal 20 karakter");
+      return;
+    }
+
+    // Password validation
+    if (password.length < 8) {
+      setError("Password minimal 8 karakter");
+      return;
+    }
+    
+    if (password.length > 20) {
+      setError("Password maksimal 20 karakter");
+      return;
+    }
+
+    // If all validations pass
+    setError("");
+    setIsFormValid(true);
   };
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-[#ffffff]"
+      className="min-h-screen flex items-center justify-center bg-[#ffffff] relative"
       style={{
         backgroundImage: "url('/images/bromo.png')",
         backgroundSize: "cover",
@@ -67,7 +82,6 @@ function Login() {
           />
         </div>
 
-        {/* Rest of the login component content */}
         {/* Left Side - Form */}
         <div className="w-1/2 p-12 pt-24">
           <h1 className="text-[#2B5C2E] text-4xl font-bold mb-8">Masuk</h1>
@@ -106,26 +120,44 @@ function Login() {
               <input
                 type="text"
                 placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                required
               />
             </div>
             <div>
               <input
                 type="password"
                 placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                required
               />
             </div>
+            
+            {error && (
+              <p className="text-red-500 text-sm">{error}</p>
+            )}
 
-            <Link href="/main/home">
+            {isFormValid ? (
+              <Link href="/main/home">
+                <button
+                  type="button"
+                  className="w-full bg-[#2B5C2E] text-white py-3 rounded-lg hover:bg-green-800 transition-colors"
+                >
+                  Masuk
+                </button>
+              </Link>
+            ) : (
               <button
-                type="button"
+                type="submit"
                 className="w-full bg-[#2B5C2E] text-white py-3 rounded-lg hover:bg-green-800 transition-colors"
-                disabled={isLoading}
               >
-                {isLoading ? <LoadingThreeDotsJumping /> : 'Masuk'}
+                Masuk
               </button>
-            </Link>
+            )}
           </form>
 
           <p className="mt-6 text-center text-gray-600">
@@ -139,7 +171,7 @@ function Login() {
         {/* Right Side - Image */}
         <div className="w-1/2">
           <div
-            className="h-full bg-cover bg-center"
+            className="h-full bg-cover bg-center bg-dark/20"
             style={{ backgroundImage: "url('/images/bromo.png')" }}
           />
         </div>

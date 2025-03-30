@@ -11,7 +11,7 @@ export default function SimilarPlaces() {
     },
     {
       id: 2,
-      name: "Labuan Bajo",
+      name: "Pink Beach",
       location: "Nusa Tenggara Timur",
       rating: 4.7,
       image: "/images/pantai-komodo.png",

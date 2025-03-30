@@ -49,7 +49,7 @@ export default function Navbar() {
         <Link 
           href="/main/about" 
           className="text-blue-950 hover:text-blue-800"
-        >
+        > 
           Tentang kami
         </Link>
         <Link
