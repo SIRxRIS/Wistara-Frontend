@@ -1,7 +1,16 @@
 import React from "react";
+import Image from "next/image";
+
+interface Place {
+  id: number;
+  name: string;
+  location: string;
+  rating: number;
+  image: string;
+}
 
 export default function SimilarPlaces() {
-  const places = [
+  const places: Place[] = [
     {
       id: 1,
       name: "Raja Ampat",
@@ -42,11 +51,12 @@ export default function SimilarPlaces() {
             key={place.id}
             className="rounded-lg overflow-hidden border border-gray-200"
           >
-            <div className="h-36">
-              <img
+            <div className="relative h-36">
+              <Image
                 src={place.image}
                 alt={place.name}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
             </div>
             <div className="p-3">

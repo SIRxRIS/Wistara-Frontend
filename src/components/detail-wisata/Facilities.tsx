@@ -1,7 +1,14 @@
 import React from "react";
+import Image from "next/image";
+
+interface Facility {
+  id: number;
+  name: string;
+  icon: string;
+}
 
 export default function Facilities() {
-  const facilities = [
+  const facilities: Facility[] = [
     { id: 1, name: "Hotel", icon: "🏨" },
     { id: 2, name: "Area Parkir", icon: "🅿️" },
     { id: 3, name: "Persinggahan Kapal", icon: "🚢" },
@@ -11,11 +18,12 @@ export default function Facilities() {
 
   return (
     <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <img
+      <div className="relative h-[400px]">
+        <Image
           src="/images/komodo.png"
           alt="Komodo Dragon"
-          className="w-full h-full object-cover rounded-lg"
+          fill
+          className="object-cover rounded-lg"
         />
       </div>
       <div>

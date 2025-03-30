@@ -1,7 +1,15 @@
 import React from "react";
+import Image from "next/image";
+
+interface Attraction {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+}
 
 export default function Attractions() {
-  const attractions = [
+  const attractions: Attraction[] = [
     {
       id: 1,
       title: "Pink Beach",
@@ -42,11 +50,12 @@ export default function Attractions() {
             key={attraction.id}
             className="border border-gray-200 rounded-lg overflow-hidden flex"
           >
-            <div className="w-1/3">
-              <img
+            <div className="relative w-1/3">
+              <Image
                 src={attraction.image}
                 alt={attraction.title}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
             </div>
             <div className="w-2/3 p-4">

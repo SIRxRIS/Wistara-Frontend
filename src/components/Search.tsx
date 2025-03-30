@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
+
 type Province = {
   id: string;
   name: string;
@@ -22,7 +23,8 @@ type LocationOption = {
 };
 
 const Search = () => {
-  const router = useRouter();
+  // Remove if not being used
+  // const router = useRouter();
   const [showSortDropdown, setShowSortDropdown] = useState(false);
   const [showFilterOptions, setShowFilterOptions] = useState(false);
   const [sortOption, setSortOption] = useState("Popular");
@@ -42,7 +44,7 @@ const Search = () => {
       const response = await fetch(
         "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json"
       );
-      const provinces = await response.json();
+      const provinces: Province[] = await response.json();
       setLocations(
         provinces.map((province: Province) => ({
           id: province.id,
@@ -202,9 +204,11 @@ const Search = () => {
       {/* Navbar */}
       <nav className="py-4 px-4 md:px-16 flex items-center justify-between bg-white shadow-sm">
         <div className="flex items-center">
-          <img
+          <Image
             src="/images/logo-wistara.png"
             alt="Wistara Logo"
+            width={40}
+            height={40}
             className="h-10 object-contain"
           />
           <div className="ml-4 relative">
@@ -258,10 +262,12 @@ const Search = () => {
         <div className="flex items-center">
           <Link href="/main/profile">
             <div className="w-10 h-10 flex items-center justify-center">
-              <img
+              <Image
                 src="/images/profile.png"
                 alt="Profile"
-                className="w-10 h-10 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
+                width={40}
+                height={40}
+                className="rounded-full cursor-pointer hover:opacity-80 transition-opacity"
               />
             </div>
           </Link>
@@ -546,10 +552,11 @@ const Search = () => {
               className="bg-white rounded-lg overflow-hidden shadow-md"
             >
               <div className="h-48 relative">
-                <img
+                <Image
                   src={destination.image}
                   alt={destination.name}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               </div>
               <div className="p-4">

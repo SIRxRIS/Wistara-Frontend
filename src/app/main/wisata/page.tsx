@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Navbar from "@/components/detail-wisata/Navbar";
 import HeroSection from "@/components/detail-wisata/HeroSection";
 import Tabs from "@/components/detail-wisata/Tabs";
@@ -18,7 +18,7 @@ export default function WisataPage() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
     setActiveTab(sectionId);
   };
@@ -29,7 +29,7 @@ export default function WisataPage() {
       <div className="container mx-auto px-4 md:px-8 max-w-7xl">
         <HeroSection />
         <Tabs activeTab={activeTab} setActiveTab={scrollToSection} />
-        
+
         <div id="deskripsi" className="scroll-mt-20">
           <Description />
           <HistoryCulture />

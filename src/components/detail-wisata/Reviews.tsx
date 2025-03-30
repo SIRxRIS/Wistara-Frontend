@@ -1,7 +1,14 @@
 import React from "react";
+import Image from "next/image";
+
+interface Rating {
+  stars: number;
+  percentage: number;
+  count: number;
+}
 
 export default function Reviews() {
-  const ratings = [
+  const ratings: Rating[] = [
     { stars: 5, percentage: 72, count: 864 },
     { stars: 4, percentage: 18, count: 216 },
     { stars: 3, percentage: 6, count: 72 },
@@ -48,11 +55,15 @@ export default function Reviews() {
 
           <div className="bg-white p-4 rounded-lg">
             <div className="flex items-start mb-3">
-              <img
-                src="/images/profile.png"
-                alt="User Profile"
-                className="w-10 h-10 rounded-full mr-3"
-              />
+              <div className="relative w-10 h-10 mr-3">
+                <Image
+                  src="/images/profile.png"
+                  alt="User Profile"
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              </div>
               <div>
                 <h4 className="font-medium">Susan123</h4>
                 <div className="flex text-yellow-400 text-sm">★★★★★</div>

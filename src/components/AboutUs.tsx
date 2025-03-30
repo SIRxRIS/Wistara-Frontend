@@ -2,8 +2,10 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from 'next/image';
 
 function About() {
+  // Remove searchQuery if not being used for filtering
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
@@ -11,9 +13,11 @@ function About() {
       {/* Navbar */}
       <nav className="py-4 px-4 md:px-16 flex items-center justify-between bg-white shadow-sm">
         <div className="flex items-center">
-          <img
+          <Image
             src="/images/logo-wistara.png"
             alt="Wistara Logo"
+            width={150}
+            height={40}
             className="h-10 object-contain"
           />
           <div className="ml-4 relative">
@@ -73,9 +77,11 @@ function About() {
         <div className="flex items-center">
           <Link href="/main/profile">
             <div className="w-10 h-10 flex items-center justify-center">
-              <img
+              <Image
                 src="/images/profile.png"
                 alt="Profile"
+                width={40}  // Add required width
+                height={40} // Add required height
                 className="w-10 h-10 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
               />
             </div>
