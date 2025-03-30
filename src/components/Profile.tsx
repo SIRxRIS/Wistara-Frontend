@@ -1,7 +1,4 @@
-"use client";
-
 import React, { useState } from "react";
-import Image from "next/image";
 import {
   FaStar,
   FaChevronDown,
@@ -10,7 +7,7 @@ import {
   FaEdit,
   FaArrowLeft,
 } from "react-icons/fa";
-import { useRouter } from "next/navigation"; // Changed from next/router
+import { useNavigate } from "react-router-dom";
 
 interface Location {
   id: number;
@@ -22,7 +19,7 @@ interface Location {
 }
 
 const Profile: React.FC = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [showVisitHistory, setShowVisitHistory] = useState(true);
   const [showPlannedVisits, setShowPlannedVisits] = useState(true);
   const [showEditProfile, setShowEditProfile] = useState(false);
@@ -33,7 +30,7 @@ const Profile: React.FC = () => {
   });
 
   const goBack = () => {
-    router.back(); // Use Next.js router instead
+    navigate(-1); // Navigate to previous page
   };
 
   const visitedLocations: Location[] = [
@@ -138,11 +135,10 @@ const Profile: React.FC = () => {
     <div className="min-h-screen bg-gray-100">
       {/* Banner Image */}
       <div className="relative h-56 md:h-64 lg:h-72 w-full overflow-hidden">
-        <Image
+        <img
           src="/images/bromo.png"
           alt="Profile Banner"
-          fill
-          className="object-cover"
+          className="w-full h-full object-cover"
         />
         <button
           className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-lg"
@@ -166,12 +162,10 @@ const Profile: React.FC = () => {
         <div className="p-6">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
             <div className="relative -mt-24 bg-white rounded-full p-1 shadow-lg">
-              <Image
+              <img
                 src={profileData.profileImage}
                 alt="Profile"
-                width={128} // w-32 = 128px
-                height={128} // h-32 = 128px
-                className="rounded-full object-cover border-4 border-white"
+                className="w-32 h-32 rounded-full object-cover border-4 border-white"
               />
             </div>
             <div className="flex-1 mt-4 md:mt-0">
@@ -204,12 +198,10 @@ const Profile: React.FC = () => {
             <form onSubmit={handleEditProfile}>
               <div className="mb-4 flex flex-col items-center">
                 <div className="relative mb-4">
-                  <Image
+                  <img
                     src={profileData.profileImage}
                     alt="Profile"
-                    width={96} // w-24 = 96px
-                    height={96} // h-24 = 96px
-                    className="rounded-full object-cover"
+                    className="w-24 h-24 rounded-full object-cover"
                   />
                   <button
                     type="button"
@@ -277,13 +269,14 @@ const Profile: React.FC = () => {
         {showVisitHistory && (
           <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             {visitedLocations.map((location) => (
-              <div key={location.id} className="bg-white rounded-lg overflow-hidden shadow-md">
+              <div
+                key={location.id}
+                className="bg-white rounded-lg overflow-hidden shadow-md"
+              >
                 <div className="h-40 overflow-hidden">
-                  <Image
+                  <img
                     src={location.image}
                     alt={location.name}
-                    width={160} // Adjust based on container size
-                    height={160}
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                   />
                 </div>
@@ -320,12 +313,11 @@ const Profile: React.FC = () => {
                 className="bg-white rounded-lg overflow-hidden shadow-md"
               >
                 <div className="flex flex-col md:flex-row">
-                  <div className="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
-                    <Image
+                  <div className="md:w-1/3 h-48 md:h-auto overflow-hidden">
+                    <img
                       src={location.image}
                       alt={location.name}
-                      fill
-                      className="object-cover"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="md:w-2/3 p-4">

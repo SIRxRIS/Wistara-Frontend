@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import Image from "next/image";
 
 export default function HeroSection() {
   const [isFavorite, setIsFavorite] = useState(false);
 
   return (
     <div className="mt-6">
-      {/* Header section with title and buttons */}
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Taman Nasional Komodo</h1>
         <div className="flex space-x-2">
@@ -47,44 +45,39 @@ export default function HeroSection() {
       </div>
 
       <div className="grid grid-cols-4 grid-rows-2 gap-2 h-96">
-        <div className="col-span-2 row-span-2 relative">
-          <Image
+        <div className="col-span-2 row-span-2">
+          <img
             src="/images/pulau-komodo.png"
             alt="Komodo Island"
-            fill
-            className="object-cover rounded-l-lg"
+            className="w-full h-full object-cover rounded-l-lg"
           />
         </div>
-        <div className="col-span-1 row-span-1 relative">
-          <Image
+        <div className="col-span-1 row-span-1">
+          <img
             src="/images/pulau-padar.png"
             alt="Komodo Island View"
-            fill
-            className="object-cover rounded-tr-lg"
+            className="w-full h-full object-cover rounded-tr-lg"
           />
         </div>
-        <div className="col-span-1 row-span-1 relative">
-          <Image
+        <div className="col-span-1 row-span-1">
+          <img
             src="/images/komodo.png"
             alt="Komodo Dragon"
-            fill
-            className="object-cover"
+            className="w-full h-full object-cover"
           />
         </div>
-        <div className="col-span-1 row-span-1 relative">
-          <Image
+        <div className="col-span-1 row-span-1">
+          <img
             src="/images/pantai-komodo.png"
             alt="Komodo Beach"
-            fill
-            className="object-cover"
+            className="w-full h-full object-cover"
           />
         </div>
-        <div className="col-span-1 row-span-1 relative">
-          <Image
+        <div className="col-span-1 row-span-1">
+          <img
             src="/images/laut-komodo.png"
             alt="Komodo Sea"
-            fill
-            className="object-cover rounded-br-lg"
+            className="w-full h-full object-cover rounded-br-lg"
           />
         </div>
       </div>

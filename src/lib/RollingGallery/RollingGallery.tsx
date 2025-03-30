@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import {
   motion,
   useMotionValue,
@@ -27,10 +26,6 @@ interface RollingGalleryProps {
   images?: string[];
 }
 
-interface MotionUpdateEvent {
-  rotateY?: number;
-}
-
 const RollingGallery: React.FC<RollingGalleryProps> = ({
   autoplay = false,
   pauseOnHover = false,
@@ -39,12 +34,10 @@ const RollingGallery: React.FC<RollingGalleryProps> = ({
   // Use default images if none are provided
   const galleryImages = images.length > 0 ? images : IMGS;
 
-  const [isScreenSizeSm, setIsScreenSizeSm] = useState<boolean>(false);
-
+  const [isScreenSizeSm, setIsScreenSizeSm] = useState<boolean>(
+    window.innerWidth <= 640,
+  );
   useEffect(() => {
-    // Initialize screen size on client side to avoid SSR mismatch
-    setIsScreenSizeSm(window.innerWidth <= 640);
-
     const handleResize = () => setIsScreenSizeSm(window.innerWidth <= 640);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
@@ -64,7 +57,7 @@ const RollingGallery: React.FC<RollingGalleryProps> = ({
   // Create a 3D transform based on the rotation motion value
   const transform = useTransform(
     rotation,
-    (val: number) => `rotate3d(0,1,0,${val}deg)`
+    (val: number) => `rotate3d(0,1,0,${val}deg)`,
   );
 
   const startInfiniteSpin = (startAngle: number) => {
@@ -88,24 +81,18 @@ const RollingGallery: React.FC<RollingGalleryProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoplay]);
 
-  const handleUpdate = (latest: MotionUpdateEvent) => {
+  const handleUpdate = (latest: any) => {
     if (typeof latest.rotateY === "number") {
       rotation.set(latest.rotateY);
     }
   };
 
-  const handleDrag = (
-    _: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
-  ): void => {
+  const handleDrag = (_: any, info: PanInfo): void => {
     controls.stop();
     rotation.set(rotation.get() + info.offset.x * dragFactor);
   };
 
-  const handleDragEnd = (
-    _: MouseEvent | TouchEvent | PointerEvent,
-    info: PanInfo
-  ): void => {
+  const handleDragEnd = (_: any, info: PanInfo): void => {
     const finalAngle = rotation.get() + info.velocity.x * dragFactor;
     rotation.set(finalAngle);
     if (autoplay) {
@@ -166,19 +153,14 @@ const RollingGallery: React.FC<RollingGalleryProps> = ({
               className="group absolute flex h-fit items-center justify-center p-[8%] [backface-visibility:hidden] md:p-[6%]"
               style={{
                 width: `${faceWidth}px`,
-                transform: `rotateY(${
-                  (360 / faceCount) * i
-                }deg) translateZ(${radius}px)`,
+                transform: `rotateY(${(360 / faceCount) * i}deg) translateZ(${radius}px)`,
               }}
             >
-              <div className="relative h-[120px] w-[300px] sm:h-[100px] sm:w-[220px]">
-                <Image
-                  src={url}
-                  alt="gallery image"
-                  fill
-                  className="pointer-events-none rounded-[15px] border-[3px] border-white object-cover transition-transform duration-300 ease-out group-hover:scale-105"
-                />
-              </div>
+              <img
+                src={url}
+                alt="gallery"
+                className="pointer-events-none h-[120px] w-[300px] rounded-[15px] border-[3px] border-white object-cover transition-transform duration-300 ease-out group-hover:scale-105 sm:h-[100px] sm:w-[220px]"
+              />
             </div>
           ))}
         </motion.div>

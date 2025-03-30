@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 interface Preferences {
   destinationType: string;
@@ -43,11 +42,9 @@ const Personal = () => {
       {/* Navbar */}
       <nav className="py-4 px-4 md:px-16 flex items-center justify-between bg-white shadow-sm">
         <div className="flex items-center">
-          <Image
+          <img
             src="/images/logo-wistara.png"
             alt="Wistara Logo"
-            width={40}
-            height={40}
             className="h-10 object-contain"
           />
           <div className="ml-4 relative">
@@ -107,12 +104,10 @@ const Personal = () => {
         <div className="flex items-center">
           <Link href="/main/profile">
             <div className="w-10 h-10 flex items-center justify-center">
-              <Image
+              <img
                 src="/images/profile.png"
                 alt="Profile"
-                width={40}
-                height={40}
-                className="rounded-full cursor-pointer hover:opacity-80 transition-opacity"
+                className="w-10 h-10 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
               />
             </div>
           </Link>
@@ -259,14 +254,14 @@ const Personal = () => {
         </form>
 
         {/* Call to Action section */}
-        <div className="text-center mt-16 p-8 rounded-xl relative overflow-hidden">
-          <Image
-            src="/images/raja-ampat.png"
-            alt="Raja Ampat Background"
-            fill
-            className="object-cover"
-            priority
-          />
+        <div
+          className="text-center mt-16 p-8 rounded-xl relative overflow-hidden"
+          style={{
+            backgroundImage: 'url("/images/raja-ampat.png")',
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
           {/* Dark overlay for better text readability */}
           <div className="absolute inset-0 bg-black/50"></div>
 

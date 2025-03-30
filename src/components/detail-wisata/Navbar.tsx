@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -8,14 +7,11 @@ export default function Navbar() {
   return (
     <nav className="py-4 px-4 md:px-16 flex items-center justify-between bg-white shadow-sm">
       <div className="flex items-center">
-        <Image
+        <img
           src="/images/logo-wistara.png"
           alt="Wistara Logo"
-          width={40}
-          height={40}
           className="h-10 object-contain"
         />
-        {/* Search input section */}
         <div className="ml-4 relative">
           <input
             type="text"
@@ -24,7 +20,6 @@ export default function Navbar() {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="bg-gray-100 py-2 px-4 pl-10 rounded-full w-64 md:w-80 focus:outline-none"
           />
-          {/* Search icon */}
           <div className="absolute left-3 top-2.5">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +39,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Navigation Links */}
       <div className="hidden md:flex space-x-8">
         <Link
           href="/main/home"
@@ -75,12 +69,10 @@ export default function Navbar() {
       <div className="flex items-center">
         <Link href="/main/profile">
           <div className="w-10 h-10 flex items-center justify-center">
-            <Image
+            <img
               src="/images/profile.png"
               alt="Profile"
-              width={40}
-              height={40}
-              className="rounded-full cursor-pointer hover:opacity-80 transition-opacity"
+              className="w-10 h-10 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
             />
           </div>
         </Link>
