@@ -1,7 +1,7 @@
 "use client";
 
-import Profile from "@/components/Profile";
+import Search from "@/components/Search";
 
 export default function SearchPage() {
-  return <Profile />;
+  return <Search />;
 }

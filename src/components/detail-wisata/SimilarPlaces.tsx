@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 export default function SimilarPlaces() {
   const places = [
@@ -42,11 +43,12 @@ export default function SimilarPlaces() {
             key={place.id}
             className="rounded-lg overflow-hidden border border-gray-200"
           >
-            <div className="h-36">
-              <img
+            <div className="h-36 relative">
+              <Image
                 src={place.image}
                 alt={place.name}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
               />
             </div>
             <div className="p-3">

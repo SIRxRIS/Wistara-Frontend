@@ -1,15 +1,22 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+// Remove the unused router import
+// import { useRouter } from "next/navigation";
 
-// Tipe data untuk lokasi
+// Type data untuk lokasi
 type LocationOption = {
   id: string;
   name: string;
   isSelected: boolean;
+};
+
+// Create a type for province data from the API
+type Province = {
+  id: string;
+  name: string;
 };
 
 // Komponen Card untuk setiap destinasi wisata
@@ -49,9 +56,8 @@ const DestinationCard: React.FC<DestinationCardProps> = ({
           <Image
             src={`/images/${image}`}
             alt={name}
-            layout="fill"
-            objectFit="cover"
-            className="w-full h-full"
+            fill
+            className="w-full h-full object-cover"
           />
         </div>
         <div className="md:w-2/3 p-4">
@@ -81,7 +87,8 @@ const DestinationCard: React.FC<DestinationCardProps> = ({
 };
 
 const FavoritPage: React.FC = () => {
-  const router = useRouter();
+  // Remove unused router
+  // const router = useRouter();
 
   // State untuk dropdown
   const [showSortDropdown, setShowSortDropdown] = useState(false);
@@ -145,15 +152,15 @@ const FavoritPage: React.FC = () => {
     );
   };
 
-  // Fetch provinsi dari API seperti pada Search.tsx
-  const fetchProvinces = async () => {
+  // Wrap fetchProvinces with useCallback to prevent infinite loop
+  const fetchProvinces = useCallback(async () => {
     try {
       const response = await fetch(
         "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json"
       );
-      const provinces = await response.json();
+      const provinces = await response.json() as Province[];
       setLocations(
-        provinces.map((province: any) => ({
+        provinces.map((province: Province) => ({
           id: province.id,
           name: province.name,
           isSelected: false,
@@ -173,12 +180,12 @@ const FavoritPage: React.FC = () => {
         }))
       );
     }
-  };
+  }, [favorites]); // Add favorites to dependencies since it's used in the fallback
 
   // Fetch provinsi saat komponen mount
   useEffect(() => {
     fetchProvinces();
-  }, []);
+  }, [fetchProvinces]); // Add fetchProvinces to dependencies
 
   // Filter dan sort data favorit
   const filteredFavorites = favorites.filter((favorite) => {
@@ -250,9 +257,11 @@ const FavoritPage: React.FC = () => {
       {/* Navbar */}
       <nav className="py-4 px-4 md:px-16 flex items-center justify-between bg-white shadow-sm">
         <div className="flex items-center">
-          <img
+          <Image
             src="/images/logo-wistara.png"
             alt="Wistara Logo"
+            width={100}
+            height={100}
             className="h-10 object-contain"
           />
           <div className="ml-4 relative">
@@ -311,10 +320,12 @@ const FavoritPage: React.FC = () => {
 
         <div className="flex items-center">
           <div className="w-10 h-10 flex items-center justify-center">
-            <img
+            <Image
               src="/images/profile.png"
               alt="Profile"
-              className="w-10 h-10 rounded-full"
+              width={40}
+              height={40}
+              className="w-10 h-10 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
             />
           </div>
         </div>

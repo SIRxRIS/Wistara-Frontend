@@ -70,7 +70,6 @@ const RECOMMENDED_DESTINATIONS: Destination[] = [
 
 const Home: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
-  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const slides: Slide[] = [
     { image: "/images/borobudur.png", id: "01" },
@@ -86,10 +85,6 @@ const Home: React.FC = () => {
 
     return () => clearInterval(interval);
   }, [slides.length]);
-
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
 
   const goToSlide = (index: number): void => {
     setCurrentSlide(index);
@@ -245,41 +240,33 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 h-full">
             {/* Kartu Destinasi Kiri */}
             <div className="md:col-span-1 space-y-6">
-              <div className="relative overflow-hidden rounded-3xl shadow-lg h-96 group">
-                <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: "url('/images/bromo.png')" }}
-                ></div>
-                <div className="absolute inset-0 bg-black/25 flex flex-col justify-end p-6">
-                  <h3 className="text-white text-2xl font-bold">
-                    Gunung Bromo
-                  </h3>
-                  <p className="text-gray-200 text-sm">mount bromo</p>
+              {/* Use first two items from RECOMMENDED_DESTINATIONS */}
+              {RECOMMENDED_DESTINATIONS.slice(0, 2).map((dest, index) => (
+                <div key={index} className="relative overflow-hidden rounded-3xl shadow-lg h-96 group">
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url('${dest.image}')` }}
+                  ></div>
+                  <div className="absolute inset-0 bg-black/25 flex flex-col justify-end p-6">
+                    <h3 className="text-white text-2xl font-bold">
+                      {dest.name}
+                    </h3>
+                    <p className="text-gray-200 text-sm">{dest.englishName}</p>
+                  </div>
                 </div>
-              </div>
-
-              <div className="relative overflow-hidden rounded-3xl shadow-lg h-96 group">
-                <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: "url('/images/prambanan.png')" }}
-                ></div>
-                <div className="absolute inset-0 bg-black/25 flex flex-col justify-end p-6">
-                  <h3 className="text-white text-2xl font-bold">
-                    Candi Prambanan
-                  </h3>
-                  <p className="text-gray-200 text-sm">prambanan temple</p>
-                </div>
-              </div>
+              ))}
             </div>
 
             {/* Kartu Rekomendasi Tengah */}
             <div className="md:col-span-1 relative overflow-hidden rounded-3xl shadow-lg flex flex-col border border-blue-100 h-full">
               <div className="relative flex-1 p-8 flex flex-col justify-between">
                 {/* Awan Hijau Kecil (Kiri Atas) */}
-                <img
+                <Image
                   src="/images/awan-hijau-muda.png"
                   alt="Dekorasi"
-                  className="absolute top-0 right-0 w-28 h-24"
+                  width={112}
+                  height={96}
+                  className="absolute top-0 right-0"
                 />
 
                 <div className="relative z-10 text-center pt-16">
@@ -304,46 +291,42 @@ const Home: React.FC = () => {
                 </div>
 
                 {/* Awan Hijau Besar (Kiri Bawah) */}
-                <img
+                <Image
                   src="/images/awan-hijau-tua.png"
                   alt="Dekorasi"
-                  className="absolute bottom-0 left-0 w-32 h-48"
+                  width={128}
+                  height={192}
+                  className="absolute bottom-0 left-0"
                 />
 
                 {/* Awan Biru (Kanan Bawah) */}
-                <img
+                <Image
                   src="/images/awan-biru-muda.png"
                   alt="Dekorasi"
-                  className="absolute bottom-0 right-0 w-36 h-32"
+                  width={144}
+                  height={128}
+                  className="absolute bottom-0 right-0"
                 />
               </div>
             </div>
 
             {/* Kartu Destinasi Kanan */}
             <div className="md:col-span-1 space-y-6">
-              <div className="relative overflow-hidden rounded-3xl shadow-lg h-96 group">
-                <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: "url('/images/toba.png')" }}
-                ></div>
-                <div className="absolute inset-0 bg-black/25 flex flex-col justify-end p-6">
-                  <h3 className="text-white text-2xl font-bold">Danau Toba</h3>
-                  <p className="text-gray-200 text-sm">lake toba</p>
+              {/* Use last two items from RECOMMENDED_DESTINATIONS */}
+              {RECOMMENDED_DESTINATIONS.slice(2, 4).map((dest, index) => (
+                <div key={index} className="relative overflow-hidden rounded-3xl shadow-lg h-96 group">
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url('${dest.image}')` }}
+                  ></div>
+                  <div className="absolute inset-0 bg-black/25 flex flex-col justify-end p-6">
+                    <h3 className="text-white text-2xl font-bold">
+                      {dest.name}
+                    </h3>
+                    <p className="text-gray-200 text-sm">{dest.englishName}</p>
+                  </div>
                 </div>
-              </div>
-
-              <div className="relative overflow-hidden rounded-3xl shadow-lg h-96 group">
-                <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: "url('/images/monas.png')" }}
-                ></div>
-                <div className="absolute inset-0 bg-black/25 flex flex-col justify-end p-6">
-                  <h3 className="text-white text-2xl font-bold">
-                    Monumen Nasional
-                  </h3>
-                  <p className="text-gray-200 text-sm">the national monument</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -355,28 +338,8 @@ const Home: React.FC = () => {
             Destinasi Populer
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {[
-              {
-                name: "Raja Ampat",
-                location: "Papua Barat",
-                image: "/images/raja-ampat.png",
-              },
-              {
-                name: "Labuan Bajo",
-                location: "Nusa Tenggara Timur",
-                image: "/images/labuan-bajo.png",
-              },
-              {
-                name: "Borobudur",
-                location: "Jawa Tengah",
-                image: "/images/borobudur.png",
-              },
-              {
-                name: "Pura Ulun",
-                location: "Bali",
-                image: "/images/pura-ulun.png",
-              },
-            ].map((dest, index) => (
+            {/* Use FEATURED_DESTINATIONS array */}
+            {FEATURED_DESTINATIONS.map((dest, index) => (
               <div key={index} className="group cursor-pointer">
                 <div className="relative overflow-hidden rounded-2xl h-72">
                   <div

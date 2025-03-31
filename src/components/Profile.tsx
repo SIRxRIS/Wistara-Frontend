@@ -1,4 +1,7 @@
+"use client";
+
 import React, { useState } from "react";
+import Image from "next/image"; // Add this import
 import {
   FaStar,
   FaChevronDown,
@@ -7,7 +10,7 @@ import {
   FaEdit,
   FaArrowLeft,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation"; // Changed from next/router to next/navigation
 
 interface Location {
   id: number;
@@ -19,7 +22,12 @@ interface Location {
 }
 
 const Profile: React.FC = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
+  
+  const goBack = () => {
+    router.back();
+  };
+
   const [showVisitHistory, setShowVisitHistory] = useState(true);
   const [showPlannedVisits, setShowPlannedVisits] = useState(true);
   const [showEditProfile, setShowEditProfile] = useState(false);
@@ -28,10 +36,6 @@ const Profile: React.FC = () => {
     email: "User123@gmail.com",
     profileImage: "/images/profile.png",
   });
-
-  const goBack = () => {
-    navigate(-1); // Navigate to previous page
-  };
 
   const visitedLocations: Location[] = [
     {
@@ -45,27 +49,27 @@ const Profile: React.FC = () => {
     },
     {
       id: 2,
-      name: "Lokasi 2",
-      region: "Papua Barat",
+      name: "Gunung Bromo",
+      region: "Jawa Timur",
       image: "/images/bromo.png",
       rating: 4.5,
-      description: "",
+      description: "Gunung Bromo terletak di Jawa Timur dan merupakan bagian dari Taman Nasional Bromo Tengger Semeru. Dikenal dengan panorama matahari terbit dan lautan pasirnya.",
     },
     {
       id: 3,
-      name: "Lokasi 3",
+      name: "Raja Ampat",
       region: "Papua Barat",
       image: "/images/raja-ampat.png",
       rating: 4.5,
-      description: "",
+      description: "Raja Ampat memiliki keindahan bawah laut yang menakjubkan dengan lebih dari 1500 pulau kecil, terumbu karang, dan keanekaragaman hayati laut.",
     },
     {
       id: 4,
-      name: "Lokasi 4",
-      region: "Papua Barat",
+      name: "Gunung Bromo",
+      region: "Jawa Timur",
       image: "/images/bromo.png",
       rating: 4.5,
-      description: "",
+      description: "Gunung Bromo terletak di Jawa Timur dan merupakan bagian dari Taman Nasional Bromo Tengger Semeru.",
     },
   ];
 
@@ -135,17 +139,13 @@ const Profile: React.FC = () => {
     <div className="min-h-screen bg-gray-100">
       {/* Banner Image */}
       <div className="relative h-56 md:h-64 lg:h-72 w-full overflow-hidden">
-        <img
+        <Image
           src="/images/bromo.png"
           alt="Profile Banner"
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
+          priority
         />
-        <button
-          className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-lg"
-          onClick={() => setShowEditProfile(false)}
-        >
-          <span className="text-xl">✕</span>
-        </button>
 
         {/* Back Button - Added Here */}
         <button
@@ -162,10 +162,12 @@ const Profile: React.FC = () => {
         <div className="p-6">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
             <div className="relative -mt-24 bg-white rounded-full p-1 shadow-lg">
-              <img
+              <Image
                 src={profileData.profileImage}
                 alt="Profile"
-                className="w-32 h-32 rounded-full object-cover border-4 border-white"
+                width={128}
+                height={128}
+                className="rounded-full object-cover border-4 border-white"
               />
             </div>
             <div className="flex-1 mt-4 md:mt-0">
@@ -198,10 +200,12 @@ const Profile: React.FC = () => {
             <form onSubmit={handleEditProfile}>
               <div className="mb-4 flex flex-col items-center">
                 <div className="relative mb-4">
-                  <img
+                  <Image
                     src={profileData.profileImage}
                     alt="Profile"
-                    className="w-24 h-24 rounded-full object-cover"
+                    width={96}
+                    height={96}
+                    className="rounded-full object-cover"
                   />
                   <button
                     type="button"
@@ -274,11 +278,14 @@ const Profile: React.FC = () => {
                 className="bg-white rounded-lg overflow-hidden shadow-md"
               >
                 <div className="h-40 overflow-hidden">
-                  <img
-                    src={location.image}
-                    alt={location.name}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                  />
+                  <div className="relative w-full h-full">
+                    <Image
+                      src={location.image}
+                      alt={location.name}
+                      fill
+                      className="object-cover transition-transform duration-300 hover:scale-110"
+                    />
+                  </div>
                 </div>
                 <div className="p-3">
                   <h3 className="font-bold text-lg truncate">
@@ -313,11 +320,12 @@ const Profile: React.FC = () => {
                 className="bg-white rounded-lg overflow-hidden shadow-md"
               >
                 <div className="flex flex-col md:flex-row">
-                  <div className="md:w-1/3 h-48 md:h-auto overflow-hidden">
-                    <img
+                  <div className="md:w-1/3 h-48 md:h-auto overflow-hidden relative">
+                    <Image
                       src={location.image}
                       alt={location.name}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
                     />
                   </div>
                   <div className="md:w-2/3 p-4">

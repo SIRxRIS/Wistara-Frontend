@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import Link from "next/link";
+import Image from "next/image"; // Add this import
 
 // Define interfaces for our data
+// Add APIProvince interface
 interface Province {
   id: string;
   name: string;
   isSelected: boolean;
+}
+
+interface APIProvince {
+  id: string;
+  name: string;
 }
 
 // DropdownPortal component
@@ -46,13 +53,13 @@ const Main: React.FC = () => {
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  // Remove unused hoveredCard state
   
   // Add drag scroll states
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
-  
+
   // Refs
   const filterButtonRef = React.useRef<HTMLButtonElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -64,15 +71,15 @@ const Main: React.FC = () => {
     setStartX(e.pageX - containerRef.current.offsetLeft);
     setScrollLeft(containerRef.current.scrollLeft);
   };
-  
+
   const handleMouseLeave = () => {
     setIsDragging(false);
   };
-  
+
   const handleMouseUp = () => {
     setIsDragging(false);
   };
-  
+
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging || !containerRef.current) return;
     e.preventDefault();
@@ -109,7 +116,7 @@ const Main: React.FC = () => {
         const data = await response.json();
 
         // Transform the API response to match our Province interface
-        const formattedProvinces: Province[] = data.map((province: any) => ({
+        const formattedProvinces: Province[] = data.map((province: APIProvince) => ({
           id: province.id,
           name: province.name,
           isSelected: false,
@@ -159,10 +166,12 @@ const Main: React.FC = () => {
     <div className="h-screen w-full flex flex-col overflow-hidden">
       {/* Pura Ulun Section */}
       <div className="relative h-[50vh] w-[90%] mx-auto rounded-b-[45px] overflow-hidden">
-        <img
+        <Image
           src="/images/pura-ulun.png"
           alt="Pura Ulun Danu Bali"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          className="object-cover"
+          priority
         />
 
         {/* Overlay to darken the image */}
@@ -173,10 +182,12 @@ const Main: React.FC = () => {
           {/* Navigation */}
           <nav className="flex items-center justify-between py-2 mb-15">
             <div className="flex items-center">
-              <img
+              <Image
                 src="/images/logo-wistara.png"
                 alt="Wistara Logo"
-                className="h-15 object-contain"
+                width={150}
+                height={60}
+                className="object-contain"
               />
             </div>
             <div className="hidden md:flex mr-120 space-x-8">
@@ -208,10 +219,12 @@ const Main: React.FC = () => {
             <div className="flex items-center">
               <Link href="/main/profile">
                 <div className="w-15 h-15 flex items-center justify-center">
-                  <img
+                  <Image
                     src="/images/profile.png"
                     alt="Profile"
-                    className="w-13 h-13 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
+                    width={52}
+                    height={52}
+                    className="rounded-full cursor-pointer hover:opacity-80 transition-opacity"
                   />
                 </div>
               </Link>
@@ -298,7 +311,7 @@ const Main: React.FC = () => {
                                 }
                                 const data = await response.json();
                                 const formattedProvinces: Province[] = data.map(
-                                  (province: any) => ({
+                                  (province: APIProvince) => ({
                                     id: province.id,
                                     name: province.name,
                                     isSelected: false,
@@ -392,131 +405,171 @@ const Main: React.FC = () => {
           <h2 className="text-3xl font-bold text-center mt-3 text-[#2B5C2E] mb-2">
             Selamat Berpergian
           </h2>
-          <p className="text-center text-gray-800 max-w-3xl mx-auto mb-3 text-sm">
+          <p className="text-center text-gray-800 max-w-3xl mx-auto mb-3 text-xl">
             Ayo berpetualang! Temukan tempat baru, rasakan pengalaman seru, dan
             ciptakan kenangan indah bersama WISTARA.
           </p>
 
           {/* Destination Cards - Horizontal Scroll */}
           <div className="flex-1 py-4">
-            <div 
+            <div
               ref={containerRef}
               onMouseDown={handleMouseDown}
               onMouseLeave={handleMouseLeave}
               onMouseUp={handleMouseUp}
               onMouseMove={handleMouseMove}
               className={`flex overflow-x-auto h-full space-x-4 pb-4 scroll-smooth hide-scrollbar cursor-grab active:cursor-grabbing ${
-                isDragging ? 'select-none' : ''
+                isDragging ? "select-none" : ""
               }`}
             >
               {/* All destination cards should use this class structure */}
               <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] w-[400px] min-w-[400px]">
-                <img
-                  src="/images/raja-ampat.png"
-                  alt="Raja Ampat"
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="/images/raja-ampat.png"
+                    alt="Raja Ampat"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-2xl font-bold text-white mb-2">Raja Ampat</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    Raja Ampat
+                  </h3>
                   <p className="text-gray-200 text-sm">
-                    Surga tersembunyi di Papua Barat dengan keindahan bawah laut yang menakjubkan.
+                    Surga tersembunyi di Papua Barat dengan keindahan bawah laut
+                    yang menakjubkan.
                   </p>
                 </div>
               </div>
 
               {/* Toraja Card */}
               <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] min-w-[380px]">
-                <img
-                  src="/images/toraja.png"
-                  alt="Toraja"
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="/images/toraja.png"
+                    alt="Toraja"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
                   <h3 className="text-2xl font-bold text-white mb-2">Toraja</h3>
                   <p className="text-gray-200 text-sm">
-                    Destinasi budaya unik di Sulawesi Selatan dengan arsitektur tradisional.
+                    Destinasi budaya unik di Sulawesi Selatan dengan arsitektur
+                    tradisional.
                   </p>
                 </div>
               </div>
 
               {/* Gunung Bromo Card */}
               <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] min-w-[380px]">
-                <img
-                  src="/images/bromo.png"
-                  alt="Gunung Bromo"
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="/images/bromo.png"
+                    alt="Gunung Bromo"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-2xl font-bold text-white mb-2">Gunung Bromo</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    Gunung Bromo
+                  </h3>
                   <p className="text-gray-200 text-sm">
-                    Gunung berapi aktif yang ikonik di Jawa Timur dengan pemandangan matahari terbit.
+                    Gunung berapi aktif yang ikonik di Jawa Timur dengan
+                    pemandangan matahari terbit.
                   </p>
                 </div>
               </div>
 
               {/* Bantimurung Card */}
               <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] min-w-[380px]">
-                <img
-                  src="/images/bantimurung.png"
-                  alt="Bantimurung"
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="/images/bantimurung.png"
+                    alt="Bantimurung"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-2xl font-bold text-white mb-2">Bantimurung</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    Bantimurung
+                  </h3>
                   <p className="text-gray-200 text-sm">
-                    Taman Nasional dengan air terjun memukau dan koleksi kupu-kupu terbesar.
+                    Taman Nasional dengan air terjun memukau dan koleksi
+                    kupu-kupu terbesar.
                   </p>
                 </div>
               </div>
 
               {/* Pulau Komodo Card */}
               <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] min-w-[380px]">
-                <img
-                  src="/images/pulau-komodo.png"
-                  alt="Pulau Komodo"
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="/images/pulau-komodo.png"
+                    alt="Pulau Komodo"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-2xl font-bold text-white mb-2">Pulau Komodo</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    Pulau Komodo
+                  </h3>
                   <p className="text-gray-200 text-sm">
-                    Habitat alami komodo dan pantai Pink yang menakjubkan di NTT.
+                    Habitat alami komodo dan pantai Pink yang menakjubkan di
+                    NTT.
                   </p>
                 </div>
               </div>
 
               {/* Danau Toba Card */}
               <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] min-w-[380px]">
-                <img
-                  src="/images/toba.png"
-                  alt="Danau Toba"
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="/images/toba.png"
+                    alt="Danau Toba"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-2xl font-bold text-white mb-2">Danau Toba</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    Danau Toba
+                  </h3>
                   <p className="text-gray-200 text-sm">
-                    Danau vulkanik terbesar di Indonesia dengan pemandangan alam yang spektakuler.
+                    Danau vulkanik terbesar di Indonesia dengan pemandangan alam
+                    yang spektakuler.
                   </p>
                 </div>
               </div>
 
               {/* Pulau Padar Card */}
               <div className="relative group rounded-xl overflow-hidden shadow-lg h-[calc(100%-1rem)] min-w-[380px]">
-                <img
-                  src="/images/pulau-padar.png"
-                  alt="Pulau Padar"
-                  className="w-full h-full object-cover"
-                />
+                <div className="relative w-full h-full">
+                  <Image
+                    src="/images/pulau-padar.png"
+                    alt="Pulau Padar"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/80 group-hover:from-black/20 group-hover:to-black/90 transition-all duration-300"></div>
                 <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <h3 className="text-2xl font-bold text-white mb-2">Pulau Padar</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    Pulau Padar
+                  </h3>
                   <p className="text-gray-200 text-sm">
-                    Pulau eksotis dengan pemandangan bukit dan teluk yang memukau di NTT.
+                    Pulau eksotis dengan pemandangan bukit dan teluk yang
+                    memukau di NTT.
                   </p>
                 </div>
               </div>

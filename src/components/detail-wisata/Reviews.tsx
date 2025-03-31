@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 export default function Reviews() {
   const ratings = [
@@ -48,10 +49,12 @@ export default function Reviews() {
 
           <div className="bg-white p-4 rounded-lg">
             <div className="flex items-start mb-3">
-              <img
+              <Image
                 src="/images/profile.png"
-                alt="User Profile"
-                className="w-10 h-10 rounded-full mr-3"
+                alt="Profile"
+                width={40}
+                height={40}
+                className="w-10 h-10 rounded-full cursor-pointer hover:opacity-80 transition-opacity"
               />
               <div>
                 <h4 className="font-medium">Susan123</h4>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Navbar from "@/components/detail-wisata/Navbar";
 import HeroSection from "@/components/detail-wisata/HeroSection";
 import Tabs from "@/components/detail-wisata/Tabs";

@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 export default function Facilities() {
   const facilities = [
@@ -11,11 +12,12 @@ export default function Facilities() {
 
   return (
     <div className="py-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <img
+      <div className="relative h-64 md:h-full">
+        <Image
           src="/images/komodo.png"
           alt="Komodo Dragon"
-          className="w-full h-full object-cover rounded-lg"
+          fill
+          className="object-cover rounded-lg"
         />
       </div>
       <div>
