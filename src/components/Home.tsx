@@ -160,13 +160,13 @@ const Home: React.FC = () => {
                 Beranda
               </Link>
               <Link
-                href="/about"
+                href="/main/about"
                 className="text-white hover:text-gray-300 text-[22px]"
               >
                 Tentang kami
               </Link>
               <Link
-                href="/personalize"
+                href="/main/personal"
                 className="text-white hover:text-gray-300 text-[22px]"
               >
                 Personalisasi

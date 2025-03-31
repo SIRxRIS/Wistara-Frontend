@@ -15,8 +15,8 @@ function About() {
           <Image
             src="/images/logo-wistara.png"
             alt="Wistara Logo"
-            width={40}
-            height={40}
+            width={100}
+            height={100}
             className="h-10 object-contain"
           />
           <div className="ml-4 relative">
