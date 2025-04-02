@@ -239,21 +239,27 @@ const Search = () => {
 
         <div className="hidden md:flex space-x-8">
           <Link
-            href="/"
+            href="/main"
             className="text-blue-950 hover:text-blue-800 font-medium"
           >
             Beranda
           </Link>
-          <Link href="/about" className="text-blue-950 hover:text-blue-800">
+          <Link
+            href="/main/about"
+            className="text-blue-950 hover:text-blue-800"
+          >
             Tentang kami
           </Link>
           <Link
-            href="/personalization"
+            href="/main/personal"
             className="text-blue-950 hover:text-blue-800"
           >
             Personalisasi
           </Link>
-          <Link href="/favorites" className="text-blue-950 hover:text-blue-800">
+          <Link
+            href="/main/favorit"
+            className="text-blue-950 hover:text-blue-800"
+          >
             Favorit
           </Link>
         </div>
@@ -546,11 +552,11 @@ const Search = () => {
         {/* Destinations Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {sortedDestinations.map((destination) => (
-            <div
+            <Link
+              href={`/main/wisata?id=${destination.id}`}
               key={destination.id}
-              className="bg-white rounded-lg overflow-hidden shadow-md"
+              className="block bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
             >
-              
               <div className="h-48 relative">
                 <Image
                   src={destination.image}
@@ -583,7 +589,7 @@ const Search = () => {
                   {destination.location}
                 </p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
